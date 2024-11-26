@@ -47,8 +47,6 @@ php_cv_lib_gd_gdImageCreateFromTga=yes
 --with-sodium=shared,$TERMUX_PREFIX
 --with-iconv-dir=$TERMUX_PREFIX
 --with-zlib
---with-pgsql=shared,$TERMUX_PREFIX
---with-pdo-pgsql=shared,$TERMUX_PREFIX
 --with-mysqli=mysqlnd
 --with-pdo-mysql=mysqlnd
 --with-mysql-sock=$TERMUX_PREFIX/tmp/mysqld.sock
@@ -65,7 +63,6 @@ php_cv_lib_gd_gdImageCreateFromTga=yes
 --with-tidy=$TERMUX_PREFIX
 --enable-intl
 --sbindir=$TERMUX_PREFIX/bin
---disable-all
 "
 
 termux_step_host_build() {
