@@ -65,7 +65,6 @@ php_cv_lib_gd_gdImageCreateFromTga=yes
 --with-tidy=$TERMUX_PREFIX
 --enable-intl
 --sbindir=$TERMUX_PREFIX/bin
-CFLAGS=\" -Os -Wall \"
 "
 
 termux_step_host_build() {
