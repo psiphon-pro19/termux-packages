@@ -96,7 +96,7 @@ termux_step_pre_configure() {
 
 	export PATH=$PATH:$TERMUX_PKG_HOSTBUILD_DIR/sapi/cli/
 	export NATIVE_PHP_EXECUTABLE=$TERMUX_PKG_HOSTBUILD_DIR/sapi/cli/php
-	export NATIVE_MINILUA_EXECUTABLE=$TERMUX_PKG_HOSTBUILD_DIR/ext/opcache/minilua
+	export NATIVE_MINILUA_EXECUTABLE=$TERMUX_PKG_HOSTBUILD_DIR/ext/opcache/jit/ir/minilua
 	if [ "$TERMUX_ARCH" = "aarch64" ]; then
 		CFLAGS+=" -march=armv8-a+crc"
 		CXXFLAGS+=" -march=armv8-a+crc"
