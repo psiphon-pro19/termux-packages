@@ -64,7 +64,6 @@ php_cv_lib_gd_gdImageCreateFromTga=yes
 --with-tidy=$TERMUX_PREFIX
 --enable-intl
 --sbindir=$TERMUX_PREFIX/bin
---disable-phpdbg
 "
 
 termux_step_host_build() {
@@ -137,6 +136,7 @@ termux_step_post_configure() {
 	sed -i 's/#define HAVE_GD_XPM 1//' $TERMUX_PKG_BUILDDIR/main/php_config.h
 	# Avoid src/ext/standard/dns.c trying to use struct __res_state:
 	sed -i 's/#define HAVE_RES_NSEARCH 1//' $TERMUX_PKG_BUILDDIR/main/php_config.h
+ 	sed -i 's/#define HAVE_USERFAULTFD_WRITEFAULT 1//' $TERMUX_PKG_BUILDDIR/main/php_config.h
 }
 
 termux_step_post_make_install() {
