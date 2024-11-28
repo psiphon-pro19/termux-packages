@@ -66,6 +66,7 @@ php_cv_lib_gd_gdImageCreateFromTga=yes
 --sbindir=$TERMUX_PREFIX/bin
 --disable-phpdbg
 --without-phpdbg
+CFLAGS=-Os -Wall
 "
 
 termux_step_host_build() {
