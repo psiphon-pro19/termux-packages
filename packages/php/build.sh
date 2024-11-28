@@ -47,6 +47,7 @@ php_cv_lib_gd_gdImageCreateFromTga=yes
 --with-sodium=shared,$TERMUX_PREFIX
 --with-zlib
 --with-pgsql=shared,$TERMUX_PREFIX
+--with-pdo-pgsql=shared,$TERMUX_PREFIX
 --with-mysqli=mysqlnd
 --with-pdo-mysql=mysqlnd
 --with-mysql-sock=$TERMUX_PREFIX/tmp/mysqld.sock
@@ -152,7 +153,7 @@ termux_step_post_make_install() {
 
 	local extdir="$TERMUX_PREFIX/etc/$TERMUX_PKG_NAME/conf.d"
 	mkdir -p "$extdir"
-	for ext in gd ldap sodium; do
+	for ext in gd ldap pgsql pdo_pgsql sodium; do
 		echo "extension=$ext" > "$extdir/$ext.ini"
 	done
 
@@ -161,7 +162,7 @@ termux_step_post_make_install() {
 	# Shared extensions for PHP/Apache
 	mkdir -p $TERMUX_PREFIX/lib/php-apache
 	local f
-	for f in opcache ldap sodium; do
+	for f in opcache ldap pdo_pgsql pgsql sodium; do
 		local so=$TERMUX_PREFIX/lib/php-apache/${f}.so
 		rm -f ${so}
 		cp -T $TERMUX_PREFIX/lib/php/${f}.so ${so}
