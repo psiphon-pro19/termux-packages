@@ -66,7 +66,6 @@ php_cv_lib_gd_gdImageCreateFromTga=yes
 --sbindir=$TERMUX_PREFIX/bin
 --disable-phpdbg
 --without-phpdbg
-CFLAGS=-Os -pthread
 "
 
 termux_step_host_build() {
@@ -87,7 +86,7 @@ termux_step_host_build() {
 
 	(cd "$TERMUX_PKG_SRCDIR" && ./buildconf --force)
 	"$TERMUX_PKG_SRCDIR/configure" ${TERMUX_PKG_EXTRA_HOSTBUILD_CONFIGURE_ARGS}
-	make -j "$TERMUX_PKG_MAKE_PROCESSES"
+	make -j "$TERMUX_PKG_MAKE_PROCESSES" CFLAGS=" -Os -pthread "
 }
 
 termux_step_pre_configure() {
