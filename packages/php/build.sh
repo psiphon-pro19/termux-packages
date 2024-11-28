@@ -105,7 +105,6 @@ termux_step_pre_configure() {
 		CXXFLAGS+=" -march=armv8-a+crc"
 	fi
 	CFLAGS+=" -Os -Wall -pthread "
- 	CXXFLAGS+=" -Os -Wall -pthread "
 	# Regenerate configure again since we have patched config.m4 files.
 	./buildconf --force
 
