@@ -64,7 +64,6 @@ php_cv_lib_gd_gdImageCreateFromTga=yes
 --with-tidy=$TERMUX_PREFIX
 --enable-intl
 --sbindir=$TERMUX_PREFIX/bin
---disable-pdo-pgsql
 --disable-phpdbg
 --without-phpdbg
 "
