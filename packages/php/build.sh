@@ -95,7 +95,7 @@ termux_step_pre_configure() {
 	local _libgcc_path="$(dirname $_libgcc_file)"
 	local _libgcc_name="$(basename $_libgcc_file)"
 	LDFLAGS+=" -lresolv_wrapper -landroid-glob -llog -L$_libgcc_path -l:$_libgcc_name -lm -Wl,--hash-style=sysv "
-
+	CFLAGS+=" -Wl,--hash-style=both "
 	export PATH=$PATH:$TERMUX_PKG_HOSTBUILD_DIR/sapi/cli/
 	export NATIVE_PHP_EXECUTABLE=$TERMUX_PKG_HOSTBUILD_DIR/sapi/cli/php
 	export NATIVE_MINILUA_EXECUTABLE=$TERMUX_PKG_HOSTBUILD_DIR/ext/opcache/jit/ir/minilua
