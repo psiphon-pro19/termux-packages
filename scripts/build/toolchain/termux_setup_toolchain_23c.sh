@@ -17,9 +17,9 @@ termux_setup_toolchain_23c() {
 	export NM=llvm-nm
 	export CXXFILT=llvm-cxxfilt
 
-	export TERMUX_HASKELL_OPTIMISATION="-O"
+	export TERMUX_GHC_OPTIMISATION="-O"
 	if [ "${TERMUX_DEBUG_BUILD}" = true ]; then
-		TERMUX_HASKELL_OPTIMISATION="-O0"
+		TERMUX_GHC_OPTIMISATION="-O0"
 	fi
 
 	if [ "$TERMUX_ON_DEVICE_BUILD" = "false" ]; then
@@ -82,7 +82,9 @@ termux_setup_toolchain_23c() {
 	fi
 
 	export CXXFLAGS="$CFLAGS"
-	export CPPFLAGS+=" -I${TERMUX_PREFIX}/include"
+	# set the proper header include order - first package includes, then prefix includes
+	# -isystem${TERMUX_PREFIX}/include/c++/v1 is needed here for on-device building to work correctly
+	export CPPFLAGS+=" -isystem${TERMUX_PREFIX}/include/c++/v1 -isystem${TERMUX_PREFIX}/include"
 
 	# If libandroid-support is declared as a dependency, link to it explicitly:
 	if [ "$TERMUX_PKG_DEPENDS" != "${TERMUX_PKG_DEPENDS/libandroid-support/}" ]; then
@@ -92,7 +94,7 @@ termux_setup_toolchain_23c() {
 	export GOOS=android
 	export CGO_ENABLED=1
 	export GO_LDFLAGS="-extldflags=-pie"
-	export CGO_CFLAGS="-I$TERMUX_PREFIX/include"
+	export CGO_CFLAGS="-isystem$TERMUX_PREFIX/include"
 
 	export CARGO_TARGET_NAME="${TERMUX_ARCH}-linux-android"
 	if [[ "${TERMUX_ARCH}" == "arm" ]]; then
@@ -102,6 +104,11 @@ termux_setup_toolchain_23c() {
 	export CARGO_TARGET_${env_host@U}_LINKER="${CC}"
 	export CARGO_TARGET_${env_host@U}_RUSTFLAGS="-L${TERMUX_PREFIX}/lib -C link-arg=-Wl,-rpath=${TERMUX_PREFIX}/lib -C link-arg=-Wl,--enable-new-dtags"
 	export CFLAGS_${env_host}="${CPPFLAGS} ${CFLAGS}"
+	export CC_x86_64_unknown_linux_gnu="gcc"
+	export CFLAGS_x86_64_unknown_linux_gnu="-O2"
+	export PKG_CONFIG_x86_64_unknown_linux_gnu="/usr/bin/pkg-config"
+	export PKG_CONFIG_LIBDIR_x86_64_unknown_linux_gnu="/usr/lib/pkgconfig"
+	export RUST_BACKTRACE="full"
 
 	export ac_cv_func_getpwent=no
 	export ac_cv_func_endpwent=yes
@@ -121,7 +128,7 @@ termux_setup_toolchain_23c() {
 	# Do not put toolchain in place until we are done with setup, to avoid having a half setup
 	# toolchain left in place if something goes wrong (or process is just aborted):
 	local _TERMUX_TOOLCHAIN_TMPDIR=${TERMUX_STANDALONE_TOOLCHAIN}-tmp
-	rm -Rf $_TERMUX_TOOLCHAIN_TMPDIR
+	rm -Rf "$_TERMUX_TOOLCHAIN_TMPDIR"
 
 	local _NDK_ARCHNAME=$TERMUX_ARCH
 	if [ "$TERMUX_ARCH" = "aarch64" ]; then
@@ -132,7 +139,7 @@ termux_setup_toolchain_23c() {
 	cp $NDK/toolchains/llvm/prebuilt/linux-x86_64 $_TERMUX_TOOLCHAIN_TMPDIR -r
 
 	# Remove android-support header wrapping not needed on android-21:
-	rm -Rf $_TERMUX_TOOLCHAIN_TMPDIR/sysroot/usr/local
+	rm -Rf "$_TERMUX_TOOLCHAIN_TMPDIR/sysroot/usr/local"
 
 	for HOST_PLAT in aarch64-linux-android armv7a-linux-androideabi i686-linux-android x86_64-linux-android; do
 		cp $_TERMUX_TOOLCHAIN_TMPDIR/bin/$HOST_PLAT$TERMUX_PKG_API_LEVEL-clang \

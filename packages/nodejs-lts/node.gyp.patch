@@ -1,6 +1,6 @@
---- ./node.gyp.orig	2024-12-02 16:39:38.000000000 +0530
-+++ ./node.gyp	2024-12-17 18:14:55.840513355 +0530
-@@ -558,7 +558,8 @@
+--- ./node.gyp.orig	2025-04-23 02:40:29.000000000 +0530
++++ ./node.gyp	2025-04-23 23:17:43.094140915 +0530
+@@ -538,7 +538,8 @@
        ],
  
        'sources': [
@@ -10,7 +10,7 @@
        ],
  
        'dependencies': [
-@@ -1041,298 +1042,6 @@
+@@ -1019,302 +1020,6 @@
          },
        ],
      }, # node_lib_target_name
@@ -108,7 +108,6 @@
 -        'deps/googletest/googletest.gyp:gtest_prod',
 -        'deps/histogram/histogram.gyp:histogram',
 -        'deps/uvwasi/uvwasi.gyp:uvwasi',
--        'deps/ada/ada.gyp:ada',
 -        'deps/nbytes/nbytes.gyp:nbytes',
 -      ],
 -      'includes': [
@@ -155,9 +154,6 @@
 -        'deps/googletest/googletest.gyp:gtest',
 -        'deps/googletest/googletest.gyp:gtest_main',
 -        'deps/histogram/histogram.gyp:histogram',
--        'deps/simdjson/simdjson.gyp:simdjson',
--        'deps/simdutf/simdutf.gyp:simdutf',
--        'deps/ada/ada.gyp:ada',
 -        'deps/nbytes/nbytes.gyp:nbytes',
 -      ],
 -
@@ -190,17 +186,26 @@
 -          'dependencies': [
 -            'deps/ncrypto/ncrypto.gyp:ncrypto',
 -          ],
--          'sources': [ '<@(node_cctest_openssl_sources)' ],
+-        }, {
+-          'sources!': [ '<@(node_cctest_openssl_sources)' ],
 -        }],
 -        ['v8_enable_inspector==1', {
 -          'defines': [
 -            'HAVE_INSPECTOR=1',
 -          ],
--          'sources': [ '<@(node_cctest_inspector_sources)' ],
+-          'include_dirs': [
+-            # TODO(legendecas): make node_inspector.gypi a dependable target.
+-            '<(SHARED_INTERMEDIATE_DIR)', # for inspector
+-            '<(SHARED_INTERMEDIATE_DIR)/src', # for inspector
+-          ],
+-          'dependencies': [
+-            'deps/inspector_protocol/inspector_protocol.gyp:crdtp',
+-          ],
 -        }, {
 -           'defines': [
 -             'HAVE_INSPECTOR=0',
--           ]
+-           ],
+-           'sources!': [ '<@(node_cctest_inspector_sources)' ],
 -        }],
 -        ['OS=="solaris"', {
 -          'ldflags': [ '-I<(SHARED_INTERMEDIATE_DIR)' ]
@@ -235,7 +240,6 @@
 -      'dependencies': [
 -        '<(node_lib_target_name)',
 -        'deps/histogram/histogram.gyp:histogram',
--        'deps/ada/ada.gyp:ada',
 -        'deps/nbytes/nbytes.gyp:nbytes',
 -      ],
 -
@@ -309,7 +313,7 @@
      {
        'target_name': 'node_js2c',
        'type': 'executable',
-@@ -1369,73 +1078,6 @@
+@@ -1351,70 +1056,6 @@
          }],
        ]
      },
@@ -320,10 +324,7 @@
 -      'dependencies': [
 -        '<(node_lib_target_name)',
 -        'deps/histogram/histogram.gyp:histogram',
--        'deps/ada/ada.gyp:ada',
 -        'deps/nbytes/nbytes.gyp:nbytes',
--        'deps/simdjson/simdjson.gyp:simdjson',
--        'deps/simdutf/simdutf.gyp:simdutf',
 -      ],
 -
 -      'includes': [

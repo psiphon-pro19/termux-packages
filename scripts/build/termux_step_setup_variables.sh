@@ -6,7 +6,8 @@ termux_step_setup_variables() {
 	: "${TERMUX_FORCE_BUILD_DEPENDENCIES:="false"}"
 	: "${TERMUX_INSTALL_DEPS:="false"}"
 	: "${TERMUX_PKG_MAKE_PROCESSES:="$(nproc)"}"
-	: "${TERMUX_NO_CLEAN:="false"}"
+	: "${TERMUX_PKGS__BUILD__RM_ALL_PKGS_BUILT_MARKER_AND_INSTALL_FILES:="true"}"
+	: "${TERMUX_PKGS__BUILD__RM_ALL_PKG_BUILD_DEPENDENT_DIRS:="false"}"
 	: "${TERMUX_PKG_API_LEVEL:="24"}"
 	: "${TERMUX_CONTINUE_BUILD:="false"}"
 	: "${TERMUX_QUIET_BUILD:="false"}"
@@ -49,11 +50,11 @@ termux_step_setup_variables() {
 		# For on-device builds cross-compiling is not supported so we can
 		# store information about built packages under $TERMUX_TOPDIR.
 		TERMUX_BUILT_PACKAGES_DIRECTORY="$TERMUX_TOPDIR/.built-packages"
-		TERMUX_NO_CLEAN="true"
+		TERMUX_PKGS__BUILD__RM_ALL_PKGS_BUILT_MARKER_AND_INSTALL_FILES="false"
 
 		if [ "$TERMUX_PACKAGE_LIBRARY" = "bionic" ]; then
 			# On-device builds without termux-exec are unsupported.
-			if ! grep -q "${TERMUX_PREFIX}/lib/libtermux-exec.so" <<< "${LD_PRELOAD-x}"; then
+			if [[ ":${LD_PRELOAD:-}:" != ":${TERMUX_PREFIX}/lib/libtermux-exec"*".so:" ]]; then
 				termux_error_exit "On-device builds without termux-exec are not supported."
 			fi
 		fi
@@ -95,12 +96,8 @@ termux_step_setup_variables() {
 			if [ -n "${LD_PRELOAD-}" ]; then
 				unset LD_PRELOAD
 			fi
-			if ! $(echo "$PATH" | grep -q "^$TERMUX_PREFIX/bin"); then
-				if [ -d "${TERMUX_PREFIX}/bin" ]; then
-					export PATH="${TERMUX_PREFIX}/bin:${PATH}"
-				else
-					termux_error_exit "Glibc components are not installed, run './scripts/setup-termux-glibc.sh'"
-				fi
+			if [ ! -d "${TERMUX_PREFIX}/bin" ]; then
+				termux_error_exit "Glibc components are not installed, run './scripts/setup-termux-glibc.sh'"
 			fi
 		else
 			if [ ! -d "${CGCT_DIR}/${TERMUX_ARCH}/bin" ]; then
@@ -160,6 +157,7 @@ termux_step_setup_variables() {
 	TERMUX_PKG_MASSAGEDIR=$TERMUX_TOPDIR/$TERMUX_PKG_NAME/massage
 	TERMUX_PKG_METAPACKAGE=false
 	TERMUX_PKG_NO_ELF_CLEANER=false # set this to true to disable running of termux-elf-cleaner on built binaries
+	TERMUX_PKG_NO_REPLACE_GUESS_SCRIPTS=false # if true, do not find and replace config.guess and config.sub in source directory
 	TERMUX_PKG_NO_SHEBANG_FIX=false # if true, skip fixing shebang accordingly to TERMUX_PREFIX
 	TERMUX_PKG_NO_SHEBANG_FIX_FILES="" # files to be excluded from fixing shebang
 	TERMUX_PKG_NO_STRIP=false # set this to true to disable stripping binaries
@@ -191,6 +189,7 @@ termux_step_setup_variables() {
 	TERMUX_PYTHON_HOME=$TERMUX_PREFIX/lib/python${TERMUX_PYTHON_VERSION} # location of python libraries
 	TERMUX_PKG_MESON_NATIVE=false
 	TERMUX_PKG_CMAKE_CROSSCOMPILING=true
+	TERMUX_PROOT_EXTRA_ENV_VARS="" # Extra environvent variables for proot command in termux_setup_proot
 
 	unset CFLAGS CPPFLAGS LDFLAGS CXXFLAGS
 	unset TERMUX_MESON_ENABLE_SOVERSION # setenv to enable SOVERSION suffix for shared libs built with Meson

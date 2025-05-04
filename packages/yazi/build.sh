@@ -2,9 +2,9 @@ TERMUX_PKG_HOMEPAGE=https://yazi-rs.github.io/
 TERMUX_PKG_DESCRIPTION="Blazing fast terminal file manager written in Rust, based on async I/O"
 TERMUX_PKG_LICENSE="MIT"
 TERMUX_PKG_MAINTAINER="@termux"
-TERMUX_PKG_VERSION="0.4.1"
+TERMUX_PKG_VERSION="25.4.8"
 TERMUX_PKG_SRCURL=https://github.com/sxyazi/yazi/archive/refs/tags/v${TERMUX_PKG_VERSION}.tar.gz
-TERMUX_PKG_SHA256=702f7f7b69248d8e2bc2d75c1f293d6c92bad4e37a87e5e02850ba44ece44e2c
+TERMUX_PKG_SHA256=b001df58df5276587eecb89ed90e8ea7a2bf738819ccb1afc722355fa2c56eae
 TERMUX_PKG_AUTO_UPDATE=true
 TERMUX_PKG_BUILD_IN_SRC=true
 

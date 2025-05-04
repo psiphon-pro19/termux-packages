@@ -1,10 +1,10 @@
 TERMUX_PKG_HOMEPAGE=https://git-scm.com/
 TERMUX_PKG_DESCRIPTION="Fast, scalable, distributed revision control system"
 TERMUX_PKG_LICENSE="GPL-2.0"
-TERMUX_PKG_MAINTAINER="@termux"
-TERMUX_PKG_VERSION="2.47.1"
+TERMUX_PKG_MAINTAINER="Joshua Kahn @TomJo2000"
+TERMUX_PKG_VERSION="2.49.0"
 TERMUX_PKG_SRCURL=https://mirrors.kernel.org/pub/software/scm/git/git-${TERMUX_PKG_VERSION}.tar.xz
-TERMUX_PKG_SHA256=f3d8f9bb23ae392374e91cd9d395970dabc5b9c5ee72f39884613cd84a6ed310
+TERMUX_PKG_SHA256=618190cf590b7e9f6c11f91f23b1d267cd98c3ab33b850416d8758f8b5a85628
 TERMUX_PKG_AUTO_UPDATE=true
 TERMUX_PKG_DEPENDS="libcurl, libexpat, libiconv, less, openssl, pcre2, zlib"
 TERMUX_PKG_RECOMMENDS="openssh"

@@ -2,10 +2,10 @@ TERMUX_PKG_HOMEPAGE=https://myriad-dreamin.github.io/tinymist
 TERMUX_PKG_DESCRIPTION="An integrated language service for Typst"
 TERMUX_PKG_LICENSE="Apache-2.0"
 TERMUX_PKG_MAINTAINER="Joshua Kahn @TomJo2000"
-TERMUX_PKG_VERSION="0.12.12"
+TERMUX_PKG_VERSION="0.13.12"
 TERMUX_PKG_SRCURL=https://github.com/Myriad-Dreamin/tinymist/archive/refs/tags/v${TERMUX_PKG_VERSION}.tar.gz
-TERMUX_PKG_SHA256=f9cb474364d2f1e42a51a0c409b03e7f2482787f260d7a2ab6df71dce27b4d47
-TERMUX_PKG_BLACKLISTED_ARCHES="i686"
+TERMUX_PKG_SHA256=f7cb81e9aac04a5aafeb8f19161204174d9072935b93df9202f1583bed826c51
+TERMUX_PKG_EXCLUDED_ARCHES="i686"
 TERMUX_PKG_DEPENDS="openssl"
 TERMUX_PKG_BREAKS="typst-lsp"
 TERMUX_PKG_REPLACES="typst-lsp"
@@ -37,7 +37,6 @@ termux_step_make() {
 
 termux_step_make_install() {
 	install -Dm700 -t "$TERMUX_PREFIX/bin" target/"${CARGO_TARGET_NAME}"/release/tinymist
-	install -Dm700 -t "$TERMUX_PREFIX/bin" target/"${CARGO_TARGET_NAME}"/release/typlite
 
 	mkdir -p "${TERMUX_PREFIX}/share/elvish/lib"
 	mkdir -p "${TERMUX_PREFIX}/share/zsh/site-functions"

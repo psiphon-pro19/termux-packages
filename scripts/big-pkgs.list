@@ -1,7 +1,13 @@
 angle-android
-bionic-host
+aosp-libs
+carbonyl-host-tools
+carbonyl
+chromium
+chromium-host-tools
 clvk
 dart
+dotnet8.0
+dotnet9.0
 firefox
 grafana
 libllvm
@@ -13,3 +19,4 @@ thunderbird
 tinygo
 wasmer
 zig
+ghc
